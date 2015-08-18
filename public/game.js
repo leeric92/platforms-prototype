@@ -320,6 +320,7 @@ var state = {
 
     if(BUTTON_A && /*this.player.body.touching.down &&*/ !this.player.dead) {
       this.player.body.velocity.y = -150;
+      this.player.animations.sprite.angle += 1;
       // jumpEffect = game.add.audio('jump');
       // jumpEffect.play();
     } else {
