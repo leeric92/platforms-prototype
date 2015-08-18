@@ -198,17 +198,7 @@ if (window.DeviceMotionEvent != undefined) {
       }
 
 
-      if (e.accelerationIncludingGravity.y > 3) {
-        $('#accelerationY').text('LOL')
-        posX = 100;
-      } else if (e.accelerationIncludingGravity.y < -3) {
-        $('#accelerationY').text('w00t')
-        posX = -100;
-      } else {
-        posX = 0;
-      }
-
-    } else if (!android) {
+    } else {
 
       if (e.accelerationIncludingGravity.z > 0) {
         controller.pressA();
@@ -217,17 +207,18 @@ if (window.DeviceMotionEvent != undefined) {
       if (e.accelerationIncludingGravity.z < 0) {
         controller.releaseA();
       }
-
-
-      if (e.accelerationIncludingGravity.y < -3) {
-        posX = 100; //right
-      } else if (e.accelerationIncludingGravity.y > 3) {
-        posX = -100;
-      } else {
-        posX = 0;
-      }
-
     }
+
+
+    if (e.accelerationIncludingGravity.y > 3) {
+      posX = 100;
+    } else if (e.accelerationIncludingGravity.y < -3) {
+      posX = -100;
+    } else {
+      posX = 0;
+    }
+
+    
 
     if ( e.rotationRate ) {
       $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
