@@ -100,9 +100,9 @@ if (window.DeviceMotionEvent != undefined) {
  * Description: Creates a new controller instance and connects it up to the
  * communication lines
  */
-// var controller = new Controller();
-// controller.connect();
-// controller.startCommunication();
+var controller = new Controller();
+controller.connect();
+controller.startCommunication();
 
 /**
  * control decelerate button
@@ -116,14 +116,12 @@ $('.control__decelerate--button')
 .on('touchstart', function() {
   console.log('decelerate start');
   this.classList.add('is-pressed');
-  // TODO: wire this up to controller communication
-  // controller.decelerateStart();
+  controller.decelerateStart();
 })
 .on('touchend', function() {
   console.log('decelerate end');
   this.classList.remove('is-pressed');
-  // TODO: wire this up to controller communication
-  // controller.decelerateEnd();
+  controller.decelerateEnd();
 });
 
 /**
@@ -138,12 +136,10 @@ $('.control__accelerate--button')
 .on('touchstart', function() {
   console.log('accelerate start');
   this.classList.add('is-pressed');
-  // TODO: wire this up to controller communication
-  // controller.accelerateStart();
+  controller.accelerateStart();
 })
 .on('touchend', function() {
   console.log('accelerate end');
   this.classList.remove('is-pressed');
-  // TODO: wire this up to controller communication
-  // controller.accelerateStart();
+  controller.accelerateStart();
 });
