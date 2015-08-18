@@ -8,6 +8,8 @@
 var posX = 0;
 var posY = 0;
 
+var android = !(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream);
+
 
 var controller = new Controller();
 controller.connect();
@@ -168,3 +170,74 @@ $('#button__b i').on('touchstart', function() {
 $('#button__b i').on('touchend', function() {
   $(this).css('color', 'white');
 });
+
+
+////////////////////////////////////
+// Accelerometer logic... 
+////////////////////////////////////
+
+
+var x = 0, y = 0,
+    vx = 0, vy = 0,
+  ax = 0, ay = 0;
+  
+if (window.DeviceMotionEvent != undefined) {
+  window.ondevicemotion = function(e) {
+    $("#accelerationX").html(e.accelerationIncludingGravity.x);
+    $("#accelerationY").html(e.accelerationIncludingGravity.y);
+    $("#accelerationZ").html(e.accelerationIncludingGravity.z);
+
+    if (android) {
+
+      if (e.accelerationIncludingGravity.z < 0) {
+        controller.pressA();
+      }
+
+      if (e.accelerationIncludingGravity.z > 0) {
+        controller.releaseA();
+      }
+
+
+      if (e.accelerationIncludingGravity.y > 3) {
+        $('#accelerationY').text('LOL')
+        posX = 100;
+      } else if (e.accelerationIncludingGravity.y < -3) {
+        $('#accelerationY').text('w00t')
+        posX = -100;
+      } else {
+        posX = 0;
+      }
+
+    } else if (!android) {
+
+      if (e.accelerationIncludingGravity.z > 0) {
+        controller.pressA();
+      }
+
+      if (e.accelerationIncludingGravity.z < 0) {
+        controller.releaseA();
+      }
+
+
+      if (e.accelerationIncludingGravity.y < -3) {
+        posX = 100; //right
+      } else if (e.accelerationIncludingGravity.y > 3) {
+        posX = -100;
+      } else {
+        posX = 0;
+      }
+
+    }
+
+    if ( e.rotationRate ) {
+      $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
+      $("#rotationBeta").innerHTML = e.rotationRate.beta;
+      $("#rotationGamma").innerHTML = e.rotationRate.gamma;
+    }   
+  }
+} 
+
+
+
+
+
