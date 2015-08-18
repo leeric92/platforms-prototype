@@ -29,5 +29,16 @@
     "underscore": "^1.8.3"
   },"devDependencies":{
     
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:enigmatic-eyrie-6604.git"
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ]
 }
