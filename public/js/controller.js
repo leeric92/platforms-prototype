@@ -1,4 +1,10 @@
 /**
+ * android
+ * Description: Checks if device is an android
+ */
+var android = !(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream);
+
+/**
  * addEventListener contextmenu
  * Description: Removes context menus on long touch hold
  */
@@ -8,6 +14,15 @@ window.addEventListener('contextmenu', function(e) {
 });
 
 /**
+ * controller
+ * Description: Creates a new controller instance and connects it up to the
+ * communication lines
+ */
+var controller = new Controller();
+controller.connect();
+controller.startCommunication();
+
+/**
  * posX, posY
  * Description: The global variables we need access to in order to change the
  * velocity of our character.
@@ -15,21 +30,12 @@ window.addEventListener('contextmenu', function(e) {
 var posX = 0;
 var posY = 0;
 
-var android = !(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream);
-
-
-var controller = new Controller();
-controller.connect();
-controller.startCommunication();
-
-
-/*
-  setInterval updateVelocity
-  inputs: posX, posY
-  Description:
-    Every 20 milliseconds, it will call updateVelocity in communication/client.js. 
-  author: Alex Leonetti
-*/
+/**
+ * setInterval updateVelocity
+ * Inputs: posX, posY
+ * Description: Every 20 milliseconds, it will call updateVelocity in
+ * communication/client.js.
+ */
 setInterval(function(){
   controller.updateVelocity(posX, posY);
 }, 25);
@@ -44,7 +50,7 @@ setInterval(function(){
 
 var x = 0, y = 0,
     vx = 0, vy = 0,
-  ax = 0, ay = 0;
+    ax = 0, ay = 0;
   
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
@@ -90,19 +96,6 @@ if (window.DeviceMotionEvent != undefined) {
     }   
   }
 } 
-
-
-
-
-
-/**
- * controller
- * Description: Creates a new controller instance and connects it up to the
- * communication lines
- */
-var controller = new Controller();
-controller.connect();
-controller.startCommunication();
 
 /**
  * control decelerate button

@@ -74,7 +74,7 @@ var updatePosition = function(positionArray) {
     if(positionArray && positionArray[i]) {
       POS_X = positionArray[i].data.velocity.x;
       POS_Y = positionArray[i].data.velocity.y;
-      BUTTON_A = positionArray[i].data.a;
+      BUTTON_A = positionArray[i].data.decelerate;
       if(RESET && BUTTON_A) {
         GAMECONTEXT.move();
       }
