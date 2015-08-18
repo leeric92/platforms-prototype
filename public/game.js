@@ -5,8 +5,8 @@
   author: Alex Leonetti
 */
 
-var SPEED = 100;
-var GRAVITY = 900;
+var SPEED = 200;
+var GRAVITY = 1;
 var LOAD_PLAYER_BOL = false;
 var DEAD_PLAYER_X = 1;
 var POS_X = 0;
@@ -309,19 +309,21 @@ var state = {
       author: Alex Leonetti
     */
     if (POS_X < -50 && this.player.body.x>1 && !this.player.dead){
-      this.player.body.velocity.x = -250;
+      this.player.body.velocity.x = -250*(SPEED/100);
     } else if (POS_X > 50 && this.player.body.x<750 && !this.player.dead) {
-      this.player.body.velocity.x = 250;
+      this.player.body.velocity.x = 250*(SPEED/100);
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
-      this.player.body.velocity.x = -99;
+      this.player.body.velocity.x = -99*(SPEED/100);
     } else {
       this.player.body.velocity.x = 0;
     }
 
-    if(BUTTON_A && this.player.body.touching.down && !this.player.dead) {
-      this.player.body.velocity.y = -600;
-      jumpEffect = game.add.audio('jump');
-      jumpEffect.play();
+    if(BUTTON_A && /*this.player.body.touching.down &&*/ !this.player.dead) {
+      this.player.body.velocity.y = -150;
+      // jumpEffect = game.add.audio('jump');
+      // jumpEffect.play();
+    } else {
+      this.player.body.velocity.y = 0;
     }
     
  
@@ -588,7 +590,7 @@ var state = {
       context.water = water.create(800, 570, 'water');
       context.water.body.immovable = true;
       context.water.body.velocity.x = -SPEED;
-    },3315);
+    },3315/(SPEED/100));
     
   },
 
@@ -685,16 +687,16 @@ var state = {
     if(this.gameStarted) {
       platformInterval = setInterval(function(){
         context.spawnPlatform();
-      }, 3000);
+      }, 3000/(SPEED/100));
       platformFallingInterval = setInterval(function(){
         context.spawnFallingPlatform();
-      }, (2000));
+      }, (2000)/(SPEED/100));
       platformNegativeInterval = setInterval(function(){
         context.spawnNegativePlatform();
-      }, 8000);
+      }, 8000/(SPEED/100));
       fishInterval = setInterval(function() {
         context.spawnFish();
-      }, 4900);
+      }, 4900/(SPEED/100));
     } 
   },
 
@@ -727,15 +729,15 @@ var state = {
 
     platformFloatingInterval = setInterval(function() {
       context.spawnFloatingPlatform();
-    }, 3000);
+    }, 3000/(SPEED/100));
 
     purpleDinoInterval = setInterval(function() {
       context.spawnPurpleDino();
-    }, 6000);
+    }, 6000/(SPEED/100));
 
     orangeDinoInterval = setInterval(function() {
       context.spawnOrangeDino();
-    }, 5000);
+    }, 5000/(SPEED/100));
 
   },
 
