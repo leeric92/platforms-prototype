@@ -308,10 +308,10 @@ var state = {
         Updates the character's velocity in game
       author: Alex Leonetti
     */
-    if (POS_X < -50 && this.player.body.x>1 && !this.player.dead){
-      this.player.body.velocity.x = -250*(SPEED/100);
-    } else if (POS_X > 50 && this.player.body.x<750 && !this.player.dead) {
-      this.player.body.velocity.x = 250*(SPEED/100);
+    if (POS_X < 1 && this.player.body.x>1 && !this.player.dead){
+      this.player.body.velocity.x = POS_X*10;
+    } else if (POS_X > 1 && this.player.body.x<750 && !this.player.dead) {
+      this.player.body.velocity.x = POS_X*10;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
       this.player.body.velocity.x = -99*(SPEED/100);
     } else {

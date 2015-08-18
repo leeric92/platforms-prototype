@@ -127,25 +127,25 @@ $('#button__a i').on('touchend', function() {
   controller.releaseA();
 });
 
-$('#button__left i').on('touchstart', function() {
-  $(this).css('color', '#FAEB74');
-  posX = -100;
-});
+// $('#button__left i').on('touchstart', function() {
+//   $(this).css('color', '#FAEB74');
+//   posX = -100;
+// });
 
-$('#button__left i').on('touchend', function() {
-  $(this).css('color', 'white');
-  posX = 0;
-});
+// $('#button__left i').on('touchend', function() {
+//   $(this).css('color', 'white');
+//   posX = 0;
+// });
 
-$('#button__right i').on('touchstart', function() {
-  $(this).css('color', '#FAEB74');
-  posX = 100;
-});
+// $('#button__right i').on('touchstart', function() {
+//   $(this).css('color', '#FAEB74');
+//   posX = 100;
+// });
 
-$('#button__right i').on('touchend', function() {
-  $(this).css('color', 'white');
-  posX = 0;
-});
+// $('#button__right i').on('touchend', function() {
+//   $(this).css('color', 'white');
+//   posX = 0;
+// });
 
 
 
@@ -187,33 +187,31 @@ if (window.DeviceMotionEvent != undefined) {
     $("#accelerationY").html(e.accelerationIncludingGravity.y);
     $("#accelerationZ").html(e.accelerationIncludingGravity.z);
 
-    if (android) {
+    // if (android) {
 
-      if (e.accelerationIncludingGravity.z < 0) {
-        controller.pressA();
-      }
+    //   if (e.accelerationIncludingGravity.z < 0) {
+    //     controller.pressA();
+    //   }
 
-      if (e.accelerationIncludingGravity.z > 0) {
-        controller.releaseA();
-      }
-
-
-    } else {
-
-      if (e.accelerationIncludingGravity.z > 0) {
-        controller.pressA();
-      }
-
-      if (e.accelerationIncludingGravity.z < 0) {
-        controller.releaseA();
-      }
-    }
+    //   if (e.accelerationIncludingGravity.z > 0) {
+    //     controller.releaseA();
+    //   }
 
 
-    if (e.accelerationIncludingGravity.y > 3) {
-      posX = 100;
-    } else if (e.accelerationIncludingGravity.y < -3) {
-      posX = -100;
+    // } else {
+
+    //   if (e.accelerationIncludingGravity.z > 0) {
+    //     controller.pressA();
+    //   }
+
+    //   if (e.accelerationIncludingGravity.z < 0) {
+    //     controller.releaseA();
+    //   }
+    // }
+
+
+    if (Math.abs(e.accelerationIncludingGravity.y) > 1.5) {
+      posX = e.accelerationIncludingGravity.y * 10;
     } else {
       posX = 0;
     }
