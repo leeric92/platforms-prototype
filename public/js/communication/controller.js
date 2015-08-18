@@ -72,53 +72,34 @@ var Controller = (function(){
     this.data.start = false;
   };
 
-  /*
-    .pressA
-    params: (nothing)
-    returns: (nothing)
-    description:
-      Will update the Controller's 'A' value to true
-    author: Rene Loperena
-  */
-  Controller.prototype.pressA = function(){
-    this.data.a = true;
+  /**
+   * decelerateStart
+   */
+  Controller.prototype.decelerateStart = function(){
+    this.data.decelerate = true;
   };
 
-  /*
-    .releaseA
-    params: (nothing)
-    returns: (nothing)
-    description:
-      Will update the Controller's 'A' value to false
-    author: Rene Loperena
-  */
-  Controller.prototype.releaseA = function(){
-    this.data.a = false;
+  /**
+   * decelerateEnd
+   */
+  Controller.prototype.decelerateEnd = function(){
+    this.data.decelerate = false;
   };
 
-  /*
-    .pressB
-    params: (nothing)
-    returns: (nothing)
-    description:
-      Will update the Controller's 'B' value to true
-    author: Rene Loperena
-  */
-  Controller.prototype.pressB = function(){
-    this.data.b = true;
+  /**
+   * accelerateStart
+   */
+  Controller.prototype.accelerateStart = function(){
+    this.data.accelerate = true;
   };
 
-  /*
-    .releaseB
-    params: (nothing)
-    returns: (nothing)
-    description:
-      Will update the Controller's 'B' value to false
-    author: Rene Loperena
-  */
-  Controller.prototype.releaseB = function(){
-    this.data.b = false;
+  /**
+   * accelerateEnd
+   */
+  Controller.prototype.accelerateEnd = function(){
+    this.data.accelerate = false;
   };
+
   /*
     .emitData
     params: (nothing)
