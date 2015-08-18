@@ -336,11 +336,11 @@ var state = {
     */
     if(this.gameStarted){
       if(this.player.body.velocity.x > 0 && this.player.body.x<770){
-        this.player.animations.play('right');
+        this.player.animations.play('still');
       } else if(this.player.body.velocity.x < -99 && this.player.body.x>10){
-        this.player.animations.play('left');
+        this.player.animations.play('still');
       } else if(this.player.body.x <= 10) {
-        this.player.animations.play('right');
+        this.player.animations.play('still');
         this.player.body.velocity.x = 100;
       } else {
         this.player.animations.play('still');
