@@ -97,7 +97,8 @@ if (window.DeviceMotionEvent != undefined) {
 
 /**
  * controller
- * Description: Creates a new controller
+ * Description: Creates a new controller instance and connects it up to the
+ * communication lines
  */
 // var controller = new Controller();
 // controller.connect();
