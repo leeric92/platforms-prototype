@@ -11,7 +11,6 @@
     <script src='js/communication/controller.js'></script>
     <script src='js/interact.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="game.js"></script>
   </head>
 
   <body oncopy="return false" oncut="return false" onpaste="return false">
@@ -34,6 +33,21 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div id="content">
+    <h1>Accelerometer Javascript Test</h1>
+    <div id="sphere" style="top: 0px; left: 0px;"></div>
+      <ul style="color: white">
+        <li>acceleration x: <span id="accelerationX"></span>g</li>
+        <li>acceleration y: <span id="accelerationY"></span>g</li>
+        <li>acceleration z: <span id="accelerationZ"></span>g</li>
+        <li>rotation alpha: <span id="rotationAlpha"></span>degree</li>
+        <li>rotation beta: <span id="rotationBeta"></span>degree</li>
+        <li>rotation gamma: <span id="rotationGamma"></span>degree</li>
+      </ul>
+
+      test: <span id="test"></span>
     </div>
 
   <script src='js/controller.js'></script>
