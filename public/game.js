@@ -308,10 +308,9 @@ var state = {
         Updates the character's velocity in game
       author: Alex Leonetti
     */
-    if (POS_X < 1 && this.player.body.x>1 && !this.player.dead){
-      this.player.body.velocity.x = POS_X*10;
-    } else if (POS_X > 1 && this.player.body.x<750 && !this.player.dead) {
-      this.player.body.velocity.x = POS_X*10;
+    if (POS_X !== 0 && this.player.body.x>1 && !this.player.dead){
+      this.player.body.velocity.x = POS_X*2;
+      this.player.animations.sprite.angle = POS_X*1;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
       this.player.body.velocity.x = -99*(SPEED/100);
     } else {
@@ -320,11 +319,11 @@ var state = {
 
     if(BUTTON_A && /*this.player.body.touching.down &&*/ !this.player.dead) {
       this.player.body.velocity.y = -150;
-      this.player.animations.sprite.angle += 1;
+      // this.player.animations.sprite.angle += 1;
       // jumpEffect = game.add.audio('jump');
       // jumpEffect.play();
     } else {
-      this.player.body.velocity.y = 0;
+      this.player.body.velocity.y = 50;
     }
     
  

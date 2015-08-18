@@ -128,7 +128,7 @@ var Controller = (function(){
   */
   Controller.prototype.startCommunication = function(intervalTime) {
     var self = this;
-    var interval = intervalTime || 50;
+    var interval = intervalTime || 10;
     setInterval(function(){
       self.emitData();
     },interval);
