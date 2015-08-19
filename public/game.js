@@ -318,7 +318,7 @@ var state = {
     */
     if (POS_X !== 0 && this.player.body.x>1 && !this.player.dead){
       // this.player.body.velocity.x = POS_X*2;
-      this.player.angle = POS_X*1;
+      // this.player.angle = POS_X*1;
       this.player.angle = POS_X*1;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
       this.player.angle = POS_X*1;
