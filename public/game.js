@@ -321,7 +321,7 @@ var state = {
       this.player.angle = POS_X*1;
       this.player.angle = POS_X*1;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
-      this.player.sprite.angle = POS_X*1;
+      this.player.angle = POS_X*1;
     }
 
     // var angle = Math.abs(POS_Y);
