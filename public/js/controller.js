@@ -54,9 +54,9 @@ var x = 0, y = 0,
   
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
-    $("#accelerationX").html(e.accelerationIncludingGravity.x);
-    $("#accelerationY").html(e.accelerationIncludingGravity.y);
-    $("#accelerationZ").html(e.accelerationIncludingGravity.z);
+    // $("#accelerationX").html(e.accelerationIncludingGravity.x);
+    // $("#accelerationY").html(e.accelerationIncludingGravity.y);
+    // $("#accelerationZ").html(e.accelerationIncludingGravity.z);
 
     // if (android) {
 
@@ -87,13 +87,13 @@ if (window.DeviceMotionEvent != undefined) {
       posX = 0;
     }
 
+    $('.log').html('phoneX: ' + posX + '<br>controllerX: ' + controller.data.velocity.x);
     
-
-    if ( e.rotationRate ) {
-      $("#rotationAlpha").html(e.rotationRate.alpha);
-      $("#rotationBeta").html(e.rotationRate.beta);
-      $("#rotationGamma").html(e.rotationRate.gamma);
-    }   
+    // if ( e.rotationRate ) {
+    //   $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
+    //   $("#rotationBeta").innerHTML = e.rotationRate.beta;
+    //   $("#rotationGamma").innerHTML = e.rotationRate.gamma;
+    // }
   }
 } 
 
