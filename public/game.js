@@ -49,6 +49,15 @@ var orangeDinoInterval;
 var purpleDinos;
 var purpleDinoInterval;
 
+//////////////////////////
+//add bird and bat monster
+var yellowBird;
+var yellowBirdInterval;
+
+var purpleBat;
+var purpleBatInterval;
+///////////////////////////
+
 
 var fishes;
 var fishInterval;
@@ -133,6 +142,12 @@ var state = {
     this.load.audio('lucky', ['assets/sounds/lucky.mp3']);
     this.load.audio('dead', ['assets/sounds/dead.mp3']);
     this.load.audio('jump', ['assets/sounds/jump.mp3']);
+
+    ///////////////////////////////////
+    //Add flying monster
+    this.load.image("bird", "assets/bird.png");
+    this.load.image("bat", "assets/bat.png");
+    ///////////////////////////////////
   },
 
   /*
@@ -209,12 +224,17 @@ var state = {
     platforms = game.add.group();
     platforms.enableBody = true;   
 
-
     water = game.add.group();
     water.enableBody = true; 
 
     purpleDinos = game.add.group();
     orangeDinos = game.add.group();
+
+    //////////////////////
+    //add flying monster//
+    yellowBird = game.add.group();
+    purpleBat = game.add.group();
+    //////////////////////
 
     fishes = game.add.group();
 
@@ -285,6 +305,19 @@ var state = {
           p.kill();
         }
       });
+
+      yellowBird.forEach(function(p) {
+        if(p && p.body.x < -150) {
+          p.kill();
+        }
+      });
+
+      purpleBat.forEach(function(p) {
+        if(p && p.body.x < -150) {
+          p.kill();
+        }
+      });
+
     }
 
     if(this.level === 'water') {
@@ -397,6 +430,9 @@ var state = {
     clearTimeout(groundTimeout);
     clearTimeout(flyTimeout);
 
+    clearInterval(yellowBirdInterval);
+    clearInterval(purpleBatInterval);
+
     
 
     this.player.dead = false;
@@ -404,6 +440,9 @@ var state = {
     water.removeAll();
     orangeDinos.removeAll();
     purpleDinos.removeAll();
+
+    yellowBird.removeAll();
+    purpleBat.removeAll();
     fishes.removeAll();
     this.gameStarted = false;
     this.gameOver = false;
@@ -489,6 +528,9 @@ var state = {
       clearInterval(platformFloatingInterval);
       clearInterval(purpleDinoInterval);
       clearInterval(orangeDinoInterval);
+
+      clearInterval(yellowBirdInterval);
+      clearInterval(purpleBatInterval);
 
       clearTimeout(waterTimeout);
       clearTimeout(groundTimeout);
@@ -661,6 +703,27 @@ var state = {
     this.fish.body.gravity.y = GRAVITY;
   },
 
+  //////////////////////////////////////////////////////////////
+  //add yellowBird and purpleBat////////////////////////////////
+
+  spawnYellowBird: function() {
+    this.yellowBird = yellowBird.create(800, 95, 'yellowBird');
+    this.yellowBird.animations.add('fly', [0,1,2,3], 10, true);
+    this.yellowBird.animations.play('fly');
+    this.physics.arcade.enableBody(this.yellowBird);
+    this.yellowBird.body.immovable = true;
+    this.yellowBird.body.velocity.x = -SPEED - 50;
+  },
+  spawnPurpleBat: function() {
+    this.purpleBat = purpleBat.create(1000, 240, 'purpleBat');
+    this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
+    this.purpleBat.animations.play('fly');
+    this.physics.arcade.enableBody(this.purpleBat);
+    this.purpleBat.body.immovable = true;
+    this.purpleBat.body.velocity.x = -SPEED - 80;
+  },
+  /////////////////////////////////////////////////////////////
+
 
   /*
     levelWater
@@ -743,6 +806,14 @@ var state = {
     orangeDinoInterval = setInterval(function() {
       context.spawnOrangeDino();
     }, 5000/(SPEED/100));
+
+    yellowBirdInterval = setInterval(function() {
+      context.spawnYellowBird();
+    }, 6000/(SPEED/100));
+
+    purpleBatInterval = setInterval(function() {
+      context.spawnPurpleBat();
+    }, 8000/(SPEED/100));
 
   },
 
