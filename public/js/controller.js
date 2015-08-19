@@ -91,11 +91,13 @@ if (window.DeviceMotionEvent != undefined) {
 
     $('.log').html('phoneX: ' + posX + '<br>controllerX: ' + controller.data.velocity.x);
     
-    // if ( e.rotationRate ) {
-    //   $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
-    //   $("#rotationBeta").innerHTML = e.rotationRate.beta;
-    //   $("#rotationGamma").innerHTML = e.rotationRate.gamma;
-    // }
+
+    if ( e.rotationRate ) {
+      $("#rotationAlpha").html(e.rotationRate.alpha);
+      $("#rotationBeta").html(e.rotationRate.beta);
+      $("#rotationGamma").html(e.rotationRate.gamma);
+
+    }   
   }
 } 
 

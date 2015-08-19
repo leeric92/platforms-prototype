@@ -331,9 +331,7 @@ var state = {
     } else {
       this.player.body.velocity.y = 0;
     }
-    
- 
-
+  
     /*
       animations
       Description:
