@@ -38,7 +38,7 @@ var posY = 0;
  */
 setInterval(function(){
   controller.updateVelocity(posX, posY);
-}, 25);
+}, 10);
 
 
 
@@ -79,9 +79,9 @@ if (window.DeviceMotionEvent != undefined) {
     //     controller.releaseA();
     //   }
     // }
+ 
 
-
-    if (Math.abs(e.accelerationIncludingGravity.y) > 1.5) {
+    if (Math.abs(e.accelerationIncludingGravity.y) > .1) {
       posX = e.accelerationIncludingGravity.y * 10;
     } else {
       posX = 0;
@@ -90,9 +90,9 @@ if (window.DeviceMotionEvent != undefined) {
     
 
     if ( e.rotationRate ) {
-      $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
-      $("#rotationBeta").innerHTML = e.rotationRate.beta;
-      $("#rotationGamma").innerHTML = e.rotationRate.gamma;
+      $("#rotationAlpha").html(e.rotationRate.alpha);
+      $("#rotationBeta").html(e.rotationRate.beta);
+      $("#rotationGamma").html(e.rotationRate.gamma);
     }   
   }
 } 
