@@ -133,3 +133,19 @@ canvas {
 .control__accelerate--button.is-pressed {
 	transform: translateY(4px);
 }
+
+/* -----------------------------------------------------------------------------
+
+  LOG
+  
+----------------------------------------------------------------------------- */
+
+.log {
+	display: absolute;
+	top: 0;
+	right: 0;
+	z-index: 100;
+	width: 100vw;
+	height: 100vh;
+	background-color: #fff;
+}
