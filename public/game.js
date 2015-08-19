@@ -10,6 +10,7 @@ var GRAVITY = 1;
 var LOAD_PLAYER_BOL = false;
 var DEAD_PLAYER_X = 1;
 var POS_X = 0;
+var ANGLE = 0;
 var POS_Y = 0;
 var DECELERATE = false;
 var ACCELERATE = false;
@@ -76,6 +77,8 @@ var updatePosition = function(positionArray) {
     if(positionArray && positionArray[i]) {
       POS_X = positionArray[i].data.velocity.x;
       POS_Y = positionArray[i].data.velocity.y;
+      ANGLE = positionArray[i].data.velocity.x;
+      RAD_ANGLE = ANGLE*(Math.PI / 180)
       DECELERATE = positionArray[i].data.decelerate;
       ACCELERATE = positionArray[i].data.accelerate;
       if(RESET && DECELERATE) {
@@ -313,28 +316,34 @@ var state = {
       author: Alex Leonetti
     */
     if (POS_X !== 0 && this.player.body.x>1 && !this.player.dead){
-      this.player.body.velocity.x = POS_X*2;
+      // this.player.body.velocity.x = POS_X*2;
       // this.player.animations.sprite.angle = POS_X*1;
       this.player.angle = POS_X*1;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
-      this.player.body.velocity.x = -99*(SPEED/100);
-    } else {
-      this.player.body.velocity.x = 0;
+      this.player.angle = POS_X*1;
     }
 
+    // var angle = Math.abs(POS_Y);
+    // var radians = Math.tan(angle);
+    // var degrees = radians * (180/Math.PI);
+
     if(DECELERATE && /*this.player.body.touching.down &&*/ !this.player.dead) {
-      this.player.body.velocity.y = -400;
-      this.player.body.velocity.x = 400;
+      this.player.body.velocity.x += Math.cos(RAD_ANGLE)*(-20);
+      this.player.body.velocity.y += Math.sin(RAD_ANGLE)*(-20);
+      // this.player.body.velocity.x = degrees;
+
 
       // this.player.animations.sprite.angle += 1;
       // jumpEffect = game.add.audio('jump');
       // jumpEffect.play();
     } else if(ACCELERATE && !this.player.dead){
-      this.player.body.velocity.y = 400;
-      this.player.body.velocity.x = -400;
-
+      this.player.body.velocity.x += Math.cos(RAD_ANGLE)*20;
+      this.player.body.velocity.y += Math.sin(RAD_ANGLE)*(20);
+      // this.player.body.velocity.y = 400;
+      // this.player.body.velocity.x = degrees;
     } else {
-      this.player.body.velocity.y = 0;
+      this.player.body.velocity.x *= .9;//-99*(SPEED/100);
+      this.player.body.velocity.y *= .9;
     }
     
  

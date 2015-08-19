@@ -85,8 +85,8 @@ if (window.DeviceMotionEvent != undefined) {
       posX = e.accelerationIncludingGravity.y * 10;
       posY = e.accelerationIncludingGravity.y * 10;
     }
-    
-    $('.log').html('phoneX: ' + posX + '<br>controllerX: ' + controller.data.velocity.x);
+
+    $('.log').html('phoney: ' + posX + '<br>controllery: ' + controller.data.velocity.y);
     
     // if ( e.rotationRate ) {
     //   $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
