@@ -11,7 +11,8 @@ var LOAD_PLAYER_BOL = false;
 var DEAD_PLAYER_X = 1;
 var POS_X = 0;
 var POS_Y = 0;
-var BUTTON_A = false;
+var DECELERATE = false;
+var ACCELERATE = false;
 var RESET = false;
 var RESETGAMEOVER = false;
 var GAMECONTEXT;
@@ -70,15 +71,18 @@ var deadEffect;
 
 var updatePosition = function(positionArray) {
 
+
   for(var i=0; i<positionArray.length; i++) {
     if(positionArray && positionArray[i]) {
       POS_X = positionArray[i].data.velocity.x;
       POS_Y = positionArray[i].data.velocity.y;
-      BUTTON_A = positionArray[i].data.decelerate;
-      if(RESET && BUTTON_A) {
+      console.log(JSON.stringify(positionArray[i].data));
+      DECELERATE = positionArray[i].data.decelerate;
+      ACCELERATE = positionArray[i].data.accelerate;
+      if(RESET && DECELERATE) {
         GAMECONTEXT.move();
       }
-      if(RESETGAMEOVER && BUTTON_A) {
+      if(RESETGAMEOVER && DECELERATE) {
         GAMECONTEXT.reset();
       }
     }
@@ -317,13 +321,15 @@ var state = {
       this.player.body.velocity.x = 0;
     }
 
-    if(BUTTON_A && /*this.player.body.touching.down &&*/ !this.player.dead) {
+    if(DECELERATE && /*this.player.body.touching.down &&*/ !this.player.dead) {
       this.player.body.velocity.y = -150;
       // this.player.animations.sprite.angle += 1;
       // jumpEffect = game.add.audio('jump');
       // jumpEffect.play();
+    } else if(ACCELERATE && !this.player.dead){
+      this.player.body.velocity.y = 150;
     } else {
-      this.player.body.velocity.y = 50;
+      this.player.body.velocity.y = 0;
     }
     
  
@@ -375,7 +381,8 @@ var state = {
     author: Alex Leonetti
   */
   reset:function() {
-    BUTTON_A = false;
+    DECELERATE = false;
+    ACCELERATE = false;
     GAMECONTEXT = this;
 
     clearInterval(waterInterval);
