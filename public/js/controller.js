@@ -83,8 +83,10 @@ if (window.DeviceMotionEvent != undefined) {
 
     if (Math.abs(e.accelerationIncludingGravity.y) > .1) {
       posX = e.accelerationIncludingGravity.y * 10;
+      posY = e.accelerationIncludingGravity.y * 10;
     } else {
       posX = 0;
+      posY = 0;
     }
 
     $('.log').html('phoneX: ' + posX + '<br>controllerX: ' + controller.data.velocity.x);
@@ -134,5 +136,5 @@ $('.control__accelerate--button')
 .on('touchend', function() {
   console.log('accelerate end');
   this.classList.remove('is-pressed');
-  controller.accelerateStart();
+  controller.accelerateEnd();
 });

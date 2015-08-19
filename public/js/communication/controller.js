@@ -15,7 +15,9 @@ var Controller = (function(){
       },
       start: false,
       a: false,
-      b: false
+      b: false,
+      accelerate: false,
+      decelerate: false
     };
   }
 
