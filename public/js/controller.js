@@ -106,7 +106,7 @@ if (window.DeviceMotionEvent != undefined) {
  */
 $('.control__decelerate--button')
 .on('touchstart', function() {
-  navigator.vibrate(50);
+  vibrate(50);
   console.log('decelerate start');
   this.classList.add('is-pressed');
   controller.decelerateStart();
@@ -127,7 +127,7 @@ $('.control__decelerate--button')
  */
 $('.control__accelerate--button')
 .on('touchstart', function() {
-  navigator.vibrate(50);
+  vibrate(50);
   console.log('accelerate start');
   this.classList.add('is-pressed');
   controller.accelerateStart();
@@ -137,3 +137,9 @@ $('.control__accelerate--button')
   this.classList.remove('is-pressed');
   controller.accelerateEnd();
 });
+
+var vibrate = function(ms) {
+  if (android) {
+    navigator.vibrate(ms);
+  }
+}
