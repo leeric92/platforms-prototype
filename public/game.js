@@ -198,6 +198,7 @@ var state = {
       author: Alex Leonetti
     */
     this.player = players.create(0,0,'player');
+    this.player.anchor.setTo(0.5, 0.5);
     // this.player.animations.add('left', [8,7,6,5], 10, true);
     // this.player.animations.add('right', [1,2,3,4], 10, true);
     // this.player.animations.add('still', [0], 10, true);
@@ -317,7 +318,7 @@ var state = {
     */
     if (POS_X !== 0 && this.player.body.x>1 && !this.player.dead){
       // this.player.body.velocity.x = POS_X*2;
-      // this.player.animations.sprite.angle = POS_X*1;
+      // this.player.angle = POS_X*1;
       this.player.angle = POS_X*1;
     } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
       this.player.angle = POS_X*1;
