@@ -373,9 +373,7 @@ var state = {
       this.player.body.velocity.x *= .9;//-99*(SPEED/100);
       this.player.body.velocity.y *= .9;
     }
-    
- 
-
+  
     /*
       animations
       Description:

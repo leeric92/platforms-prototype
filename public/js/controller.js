@@ -88,11 +88,13 @@ if (window.DeviceMotionEvent != undefined) {
 
     // $('.log').html('phoney: ' + posX + '<br>controllery: ' + controller.data.velocity.y);
     
-    // if ( e.rotationRate ) {
-    //   $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
-    //   $("#rotationBeta").innerHTML = e.rotationRate.beta;
-    //   $("#rotationGamma").innerHTML = e.rotationRate.gamma;
-    // }
+
+    if ( e.rotationRate ) {
+      $("#rotationAlpha").html(e.rotationRate.alpha);
+      $("#rotationBeta").html(e.rotationRate.beta);
+      $("#rotationGamma").html(e.rotationRate.gamma);
+
+    }   
   }
 } 
 
