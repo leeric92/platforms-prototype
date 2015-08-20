@@ -316,12 +316,9 @@ var state = {
         Updates the character's velocity in game
       author: Alex Leonetti
     */
-    if (POS_X !== 0 && this.player.body.x>1 && !this.player.dead){
-      // this.player.body.velocity.x = POS_X*2;
-      // this.player.angle = POS_X*1;
-      this.player.angle = POS_X*1;
-    } else if (POS_X === 0 && !this.player.body.touching.down && !this.player.dead) {
-      this.player.angle = POS_X*1;
+    if (this.player.body.x>1 && !this.player.dead){
+      // This sets the player's angle smoothly
+      this.player.angle = this.player.angle + (ANGLE - this.player.angle)*.25;
     }
 
     // var angle = Math.abs(POS_Y);
