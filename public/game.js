@@ -50,6 +50,8 @@ var orangeDinoInterval;
 var purpleDinos;
 var purpleDinoInterval;
 
+var laser;
+var laserInterval;
 
 var fishes;
 var fishInterval;
@@ -130,6 +132,8 @@ var state = {
     this.load.spritesheet("fish", "assets/fish.png", 30, 40);
     this.load.spritesheet("orangeDino", "assets/orange-dino.png", 34.5, 42);
     this.load.spritesheet("purpleDino", "assets/purple-dino.png", 118, 150);
+
+    this.load.image("laser", "assets/laser.png");
     this.load.image('water', 'assets/water.png');
     this.load.audio('fox', ['assets/sounds/fox.mp3']);
     this.load.audio('gorillaz', ['assets/sounds/gorillaz.mp3']);
@@ -221,6 +225,8 @@ var state = {
     water.enableBody = true; 
 
     purpleDinos = game.add.group();
+    lasers = game.add.group();
+
     orangeDinos = game.add.group();
 
     fishes = game.add.group();
@@ -272,6 +278,17 @@ var state = {
     this.physics.arcade.collide(players, platforms);
     this.physics.arcade.collide(players, orangeDinos, this.setGameOver, null, this);
     this.physics.arcade.collide(players, purpleDinos, this.setGameOver, null, this);
+
+
+    this.physics.arcade.overlap(lasers, purpleDinos, function(){
+      this.purpleDino.kill();
+    }, null, this);
+
+    this.physics.arcade.overlap(lasers, orangeDinos, function(){
+      this.orangeDino.kill();
+    }, null, this);
+
+
     this.physics.arcade.collide(players, fishes, this.setGameOver, null, this);
 
     /*
@@ -290,6 +307,11 @@ var state = {
       purpleDinos.forEach(function(p) {
         if(p && p.body.x < -150) {
           p.kill();
+        }
+      });
+      lasers.forEach(function(l) {
+        if(l && l.body.x > 1000 || l.body.y > 1000 || l.body.y < -1000) {
+          l.kill();
         }
       });
     }
@@ -380,8 +402,8 @@ var state = {
     }
     
 
-    console.log(this.player.body.x);
-    console.log(this.player.body.y);
+    // console.log(this.player.body.x);
+    // console.log(this.player.body.y);
 
 
 
@@ -411,6 +433,7 @@ var state = {
       Must also remove all group objects so the game starts from scratch.
     author: Alex Leonetti
   */
+
   reset:function() {
     DECELERATE = false;
     ACCELERATE = false;
@@ -437,6 +460,7 @@ var state = {
     water.removeAll();
     orangeDinos.removeAll();
     purpleDinos.removeAll();
+    lasers.removeAll();
     fishes.removeAll();
     this.gameStarted = false;
     this.gameOver = false;
@@ -683,6 +707,16 @@ var state = {
     this.purpleDino.body.immovable = true;
     this.purpleDino.body.velocity.x = -SPEED - 80;
   },
+
+  spawnLaser: function(x,y) {
+    this.laser = lasers.create(x, y, 'laser');
+    this.physics.arcade.enableBody(this.laser);
+    this.laser.body.immovable = true;
+    this.laser.anchor.setTo(0.5, 0.5);
+    this.laser.body.velocity.x = Math.cos(RAD_ANGLE)*300;
+    this.laser.body.velocity.y = Math.sin(RAD_ANGLE)*300;
+    this.laser.angle = ANGLE;
+  },
   spawnFish: function() {
     this.fish = fishes.create(700, 650, 'fish');
     this.fish.animations.add('fly', [0,1], 10, true);
@@ -707,7 +741,6 @@ var state = {
     clearInterval(platformFloatingInterval);
     clearInterval(purpleDinoInterval);
     clearInterval(orangeDinoInterval);
-
 
     this.ground = platforms.create(0, game.world.height-64, 'ground');
     this.ground.scale.setTo(2,2);
@@ -755,6 +788,7 @@ var state = {
     clearInterval(platformNegativeInterval);
     clearInterval(waterInterval);
     clearInterval(fishInterval);
+    clearInterval(laserInterval);
 
 
     this.ground = platforms.create(800, game.world.height-64, 'ground');
@@ -772,6 +806,10 @@ var state = {
     purpleDinoInterval = setInterval(function() {
       context.spawnPurpleDino();
     }, 6000/(SPEED/100));
+
+    laserInterval = setInterval(function() {
+      context.spawnLaser(context.player.body.x+30, context.player.body.y+20);
+    }, 200);
 
     orangeDinoInterval = setInterval(function() {
       context.spawnOrangeDino();
