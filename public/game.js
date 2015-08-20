@@ -146,6 +146,9 @@ var state = {
   */
   create: function() {
 
+
+
+
   /*
     music
     Description:
@@ -360,13 +363,29 @@ var state = {
         // this.player.animations.play('still');
       } else if(this.player.body.velocity.x < -99 && this.player.body.x>10){
         // this.player.animations.play('still');
-      } else if(this.player.body.x <= 10) {
+      } 
+
+      if(this.player.body.x <= 10) {
         // this.player.animations.play('still');
-        this.player.body.velocity.x = 100;
-      } else {
+        this.player.body.x = 10;
+      } 
+
+
+      if (this.player.body.y <= 25){
+        this.player.body.y = 25;
         // this.player.animations.play('still');
+      } 
+
+      if (this.player.body.x >= 730) {
+        this.player.body.x = 730
       }
+
     }
+    
+
+    console.log(this.player.body.x);
+    console.log(this.player.body.y);
+
 
 
     /*
