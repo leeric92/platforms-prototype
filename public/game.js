@@ -285,7 +285,7 @@ var state = {
     }, null, this);
 
     this.physics.arcade.overlap(lasers, orangeDinos, function(){
-      this.purpleDino.kill();
+      this.orangeDino.kill();
     }, null, this);
 
 
