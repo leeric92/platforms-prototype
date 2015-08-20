@@ -282,7 +282,21 @@ var state = {
       }
     );
 
+
+    this.scoreBanner = this.add.text(
+      this.world.centerX,
+      this.world.height/2,
+      "",
+      {
+          size: "32px",
+          fill: "#FFF",
+          align: "center"
+      }
+    );
+
     this.scoreText.anchor.setTo(0.5, 0.5);
+
+    this.scoreBanner.anchor.setTo(0.3, 0.3);
 
     /*
       reset
@@ -299,6 +313,23 @@ var state = {
      Constantly called by the phaser engine updating all aspects of the game
     author: Alex Leonetti
   */
+
+  incrementScore: function() {
+    //first increment the total score
+    this.score++;
+    
+
+    coin.forEach(function(p) {
+        if(p && p.body.x < -150) {
+          p.kill();
+        }
+    });
+    //kill the coin
+
+
+
+  },
+
   update: function() {
 
     /*
@@ -582,6 +613,13 @@ var state = {
     this.player.dead = false;  
     this.player.body.gravity.y = GRAVITY;
     this.scoreText.setText("");
+    
+
+    //initialize the score shown to be 0
+    this.score = 0;
+    this.scoreBanner.setText(this.score);
+
+
     this.gameStarted = true;
     this.background.autoScroll(-SPEED * .40 ,0);
     this.ground.body.velocity.x = -SPEED;
@@ -643,6 +681,8 @@ var state = {
     this.gameOver = true;
     this.gameStarted = false;
     this.scoreText.setText("PRESS JUMP TO\nTRY AGAIN");
+    this.score = 0;
+    this.scoreBanner.setText(this.score);
     this.background.autoScroll(0, 0);
     this.player.dead = true;
     this.player.body.x = (32 * DEAD_PLAYER_X);

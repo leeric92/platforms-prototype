@@ -3,7 +3,7 @@
  * Description: Checks if device is an android
  */
 var android = !(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream);
-var vibrator = require("nativescript-vibrate");
+
 /**
  * addEventListener contextmenu
  * Description: Removes context menus on long touch hold
@@ -86,20 +86,13 @@ if (window.DeviceMotionEvent != undefined) {
       posY = e.accelerationIncludingGravity.y * 10;
     }
 
-<<<<<<< HEAD
     // $('.log').html('phoney: ' + posX + '<br>controllery: ' + controller.data.velocity.y);
     
-=======
-    $('.log').html('phoneX: ' + posX + '<br>controllerX: ' + controller.data.velocity.x);
-  
->>>>>>> merging
-
-    if ( e.rotationRate ) {
-      $("#rotationAlpha").html(e.rotationRate.alpha);
-      $("#rotationBeta").html(e.rotationRate.beta);
-      $("#rotationGamma").html(e.rotationRate.gamma);
-
-    }   
+    // if ( e.rotationRate ) {
+    //   $("#rotationAlpha").innerHTML = e.rotationRate.alpha;
+    //   $("#rotationBeta").innerHTML = e.rotationRate.beta;
+    //   $("#rotationGamma").innerHTML = e.rotationRate.gamma;
+    // }
   }
 } 
 
@@ -137,7 +130,7 @@ $('.control__accelerate--button')
   vibrate(50);
   console.log('accelerate start');
   this.classList.add('is-pressed');
-  vibrator.vibration(2000);
+  controller.accelerateStart();
 })
 .on('touchend', function() {
   console.log('accelerate end');
@@ -150,6 +143,3 @@ var vibrate = function(ms) {
     navigator.vibrate(ms);
   }
 }
-  vibrator.vibration(2000);
-});
-
