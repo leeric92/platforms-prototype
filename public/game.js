@@ -278,7 +278,16 @@ var state = {
     this.physics.arcade.collide(players, platforms);
     this.physics.arcade.collide(players, orangeDinos, this.setGameOver, null, this);
     this.physics.arcade.collide(players, purpleDinos, this.setGameOver, null, this);
-    // this.physics.arcade.collide(players, laser, this.setGameOver, null, this);
+
+
+    this.physics.arcade.overlap(lasers, purpleDinos, function(){
+      this.purpleDino.kill();
+    }, null, this);
+
+    this.physics.arcade.overlap(lasers, orangeDinos, function(){
+      this.purpleDino.kill();
+    }, null, this);
+
 
     this.physics.arcade.collide(players, fishes, this.setGameOver, null, this);
 
@@ -301,7 +310,7 @@ var state = {
         }
       });
       lasers.forEach(function(l) {
-        if(l && l.body.x > 1000) {
+        if(l && l.body.x > 1000 || l.body.y > 1000 || l.body.y < -1000) {
           l.kill();
         }
       });
@@ -424,6 +433,7 @@ var state = {
       Must also remove all group objects so the game starts from scratch.
     author: Alex Leonetti
   */
+
   reset:function() {
     DECELERATE = false;
     ACCELERATE = false;
@@ -731,9 +741,6 @@ var state = {
     clearInterval(platformFloatingInterval);
     clearInterval(purpleDinoInterval);
     clearInterval(orangeDinoInterval);
-    clearInterval(laserInterval);
-
-
 
     this.ground = platforms.create(0, game.world.height-64, 'ground');
     this.ground.scale.setTo(2,2);
@@ -781,6 +788,7 @@ var state = {
     clearInterval(platformNegativeInterval);
     clearInterval(waterInterval);
     clearInterval(fishInterval);
+    clearInterval(laserInterval);
 
 
     this.ground = platforms.create(800, game.world.height-64, 'ground');
