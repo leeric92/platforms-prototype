@@ -280,13 +280,18 @@ var state = {
     this.physics.arcade.collide(players, purpleDinos, this.setGameOver, null, this);
 
 
-    this.physics.arcade.overlap(lasers, purpleDinos, function(){
-      this.purpleDino.kill();
+    this.physics.arcade.overlap(lasers, purpleDinos, function(player, item){
+      item.kill();
     }, null, this);
 
-    this.physics.arcade.overlap(lasers, orangeDinos, function(){
-      this.orangeDino.kill();
+    this.physics.arcade.overlap(lasers, orangeDinos, function(player, item){
+      item.kill();
     }, null, this);
+
+    this.physics.arcade.overlap(platforms, lasers, function(player, item){
+      item.kill();
+    }, null, this);
+
 
 
     this.physics.arcade.collide(players, fishes, this.setGameOver, null, this);
