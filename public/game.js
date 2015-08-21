@@ -20,6 +20,11 @@ var GAMECONTEXT;
 var PLAYERS_ARRAY = [];
 var TIME = 0;
 var SCORE = 0;
+var yellowBirdCount = 0;
+var purpleBatCount = 0;
+var brownBatCount = 0;
+var orangeDinoCount = 0;
+var purpleDinoCount = 0;
 
 
 /*
@@ -377,30 +382,64 @@ var state = {
     }, null, this);
 
     this.physics.arcade.overlap(lasers, purpleBats, function(player, item){
-      item.kill();
+      
+
+      if(purpleBatCount === 180){
+        item.kill();
+        SCORE+=10;
+        this.scoreBanner.setText(SCORE);
+        purpleBatCount = 0;
+      }else{
+        purpleBatCount++;
+      }
+
+
+      console.log(purpleBatCount);
     }, null, this);
 
     this.physics.arcade.overlap(lasers, yellowBirds, function(player, item){
-      item.kill();
+      
+      if(yellowBirdCount === 100){
+        item.kill();
+        SCORE+=2;
+        this.scoreBanner.setText(SCORE);
+        yellowBirdCount = 0;
+      }else{
+        yellowBirdCount++;
+      }
+
+      console.log(yellowBirdCount);
     }, null, this);
 
-    this.physics.arcade.overlap(lasers, brownBats, function(player, item){
-      item.kill();
+    this.physics.arcade.overlap(lasers, brownBats, function(player, item){ 
+      if(brownBatCount  === 150){
+        item.kill();
+        SCORE+=1;
+        this.scoreBanner.setText(SCORE);
+        brownBatCount = 0;
+      }else{
+        brownBatCount++;
+      }
+
+      console.log(brownBatCount);
     }, null, this);
 
     this.physics.arcade.overlap(players, goldKeys, function(player, item){
       item.kill();
-      this.score++;
+      SCORE++;
+      this.scoreBanner.setText(SCORE);
     }, null, this);
 
     this.physics.arcade.overlap(players, ringCoins, function(player, item){
       item.kill();
-      this.score++;
+      SCORE++;
+      this.scoreBanner.setText(SCORE);
     }, null, this);
 
     this.physics.arcade.overlap(players, redHearts, function(player, item){
       item.kill();
-      this.score++;
+      SCORE+=5;
+      this.scoreBanner.setText(SCORE);
     }, null, this);
 
 
@@ -764,8 +803,7 @@ var state = {
     
 
     //initialize the score shown to be 0
-    this.score = 0;
-    this.scoreBanner.setText(this.score);
+    this.scoreBanner.setText(SCORE);
 
 
     this.gameStarted = true;
@@ -834,8 +872,6 @@ var state = {
     this.gameOver = true;
     this.gameStarted = false;
     this.scoreText.setText("PRESS JUMP TO\nTRY AGAIN");
-    this.score = 0;
-    this.scoreBanner.setText(this.score);
     this.background.autoScroll(0, 0);
     this.player.dead = true;
     this.player.body.x = (32 * DEAD_PLAYER_X);
@@ -843,6 +879,8 @@ var state = {
     this.player.body.gravity.y = 0;
     this.player.body.velocity.x = 0;
     this.player.body.velocity.y = 0;
+    SCORE=0;
+    this.scoreBanner.setText(SCORE);
     // this.player.animations.play('still'); 
 
     deadEffect = game.add.audio('dead');
@@ -914,7 +952,6 @@ var state = {
       context.water.body.immovable = true;
       context.water.body.velocity.x = -SPEED;
     },3315/(SPEED/100));
-    
   },
 
   /*
@@ -1027,7 +1064,7 @@ var state = {
   /////////////////////////////////////////////////////////////
 
   spawnRingCoin: function() {
-    this.ringCoin = ringCoins.create(600, this.generateRandomGreaterY(), 'ringCoin');
+    this.ringCoin = ringCoins.create(400, this.generateRandomGreaterY(), 'ringCoin');
     this.physics.arcade.enableBody(this.ringCoin);
     this.ringCoin.body.immovable =  false;
     this.ringCoin.body.velocity.x = -SPEED;
@@ -1093,8 +1130,6 @@ var state = {
     } 
   },
 
-
-
   /*
     levelGround
     Description:
@@ -1131,7 +1166,7 @@ var state = {
 
     laserInterval = setInterval(function() {
       context.spawnLaser(context.player.body.x+30, context.player.body.y+20);
-    }, 200);
+    }, 600);
 
     orangeDinoInterval = setInterval(function() {
       context.spawnOrangeDino();
@@ -1151,23 +1186,23 @@ var state = {
 
     ringCoinFloatingInterval = setInterval(function() {
       context.spawnRingCoin();
-    }, 3000/(SPEED/100));
+    }, 8000/(SPEED/100));
 
     goldKeyFloatingInterval = setInterval(function() {
       context.spawnGoldKey();
-    }, 3000/(SPEED/100));
+    }, 14000/(SPEED/100));
 
     redHeartFloatingInterval = setInterval(function() {
       context.spawnRedHeart();
-    }, 3000/(SPEED/100));
+    }, 20000/(SPEED/100));
 
     brownBatInterval = setInterval(function() {
       context.spawnBrownBat();
-    }, 8000/(SPEED/100));
+    }, 12000/(SPEED/100));
 
     brownBirdInterval = setInterval(function() {
       context.spawnBrownBird();
-    }, 8000/(SPEED/100));
+    }, 10000/(SPEED/100));
 
   },
 
