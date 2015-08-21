@@ -53,10 +53,9 @@ var orangeDinoInterval;
 var purpleDinos;
 var purpleDinoInterval;
 
-<<<<<<< HEAD
 var laser;
 var laserInterval;
-=======
+
 //////////////////////////
 //add bird and bat monster
 var yellowBirds;
@@ -394,6 +393,19 @@ var state = {
     this.physics.arcade.overlap(platforms, lasers, function(player, item){
       item.kill();
     }, null, this);
+
+    this.physics.arcade.overlap(lasers, purpleBat, function(player, item){
+      item.kill();
+    }, null, this);
+
+    this.physics.arcade.overlap(lasers, yellowBird, function(player, item){
+      item.kill();
+    }, null, this);
+
+    this.physics.arcade.overlap(lasers, brownBat, function(player, item){
+      item.kill();
+    }, null, this);
+
 
 
 
@@ -1051,12 +1063,11 @@ var state = {
     clearInterval(purpleDinoInterval);
     clearInterval(orangeDinoInterval);
 
-<<<<<<< HEAD
+
     this.ground = platforms.create(0, game.world.height-64, 'ground');
-=======
 
     // this.ground = platforms.create(0, game.world.height-64, 'ground');
->>>>>>> finish adding moving monster
+
     this.ground.scale.setTo(2,2);
     this.ground.body.immovable = true;
     this.ground.body.velocity.x = -SPEED;
