@@ -67,6 +67,10 @@ var purpleBatInterval;
 
 >>>>>>> working on flying monster
 
+var goldCoin;
+var goldCoinFloatingInterval;
+
+
 var fishes;
 var fishInterval;
 
@@ -157,13 +161,13 @@ var state = {
 
     ///////////////////////////////////
     //Add flying monster
-    this.load.image("bird", "assets/bird.png");
-    this.load.image("bat", "assets/bat.png");
+    this.load.image("bird", "assets/yellowBird.png");
+    this.load.image("bat", "assets/purpleBat.png");
     ///////////////////////////////////
 
     /////////////////////////////////////
     //Gold Coin
-    this.load.image('coin', 'assets/coin.png');
+    this.load.image('goldCoin', 'assets/coin.png');
     ////////////////////////////////////
   },
 
@@ -262,7 +266,7 @@ var state = {
     fishes = game.add.group();
 
     //gold
-    coin = game.add.group()
+    goldCoin = game.add.group()
 
 
     /*
@@ -317,17 +321,15 @@ var state = {
   incrementScore: function() {
     //first increment the total score
     this.score++;
-    
 
-    coin.forEach(function(p) {
+    goldCoin.forEach(function(p) {
         if(p && p.body.x < -150) {
           p.kill();
         }
     });
+
     //kill the coin
-
-
-
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>hit!!!')
   },
 
   update: function() {
@@ -365,7 +367,7 @@ var state = {
     
 
     //increment the score when hit the coin
-    this.physics.arcade.collide(players, coin, this.incrementScore, null, this);
+    this.physics.arcade.collide(players, goldCoin, this.setGameOver, null, this);
 
     /*
       kill()
@@ -487,11 +489,9 @@ var state = {
       }
 
     }
-    
-
+  
     // console.log(this.player.body.x);
     // console.log(this.player.body.y);
-
 
 
     /*
@@ -542,7 +542,7 @@ var state = {
 
     clearInterval(yellowBirdInterval);
     clearInterval(purpleBatInterval);
-    clearInterval(coinFloatingInterval);
+    clearInterval(goldCoinFloatingInterval);
 
     
 
@@ -648,7 +648,7 @@ var state = {
       clearInterval(platformFloatingInterval);
       clearInterval(purpleDinoInterval);
       clearInterval(orangeDinoInterval);
-      clearInterval(coinFloatingInterval);
+      clearInterval(goldCoinFloatingInterval);
 
       clearInterval(yellowBirdInterval);
       clearInterval(purpleBatInterval);
@@ -764,7 +764,7 @@ var state = {
     
   },
   spawnFloatingCoin: function(y) {
-    this.ledge = platforms.create(600, y || this.generateRandomGreaterY(), 'coin');
+    this.ledge = platforms.create(600, y || this.generateRandomGreaterY(), 'goldCoin');
     this.ledge.body.immovable = false;
     this.ledge.body.velocity.x = -SPEED;
     this.ledge.scale.setTo(0.15,0.15);
@@ -847,22 +847,31 @@ var state = {
 
   spawnYellowBird: function() {
     this.yellowBird = yellowBird.create(800, 95, 'yellowBird');
-    this.yellowBird.animations.add('fly', [0,1,2,3], 10, true);
-    this.yellowBird.animations.play('fly');
+    // this.yellowBird.animations.add('fly', [0,1,2,3], 10, true);
+    // this.yellowBird.animations.play('fly');
     this.physics.arcade.enableBody(this.yellowBird);
     this.yellowBird.body.immovable = true;
     this.yellowBird.body.velocity.x = -SPEED - 50;
   },
   spawnPurpleBat: function() {
     this.purpleBat = purpleBat.create(1000, 240, 'purpleBat');
-    this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
-    this.purpleBat.animations.play('fly');
+    // this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
+    // this.purpleBat.animations.play('fly');
     this.physics.arcade.enableBody(this.purpleBat);
     this.purpleBat.body.immovable = true;
     this.purpleBat.body.velocity.x = -SPEED - 80;
   },
   /////////////////////////////////////////////////////////////
 
+  // spawnFloatingCoin: function() {
+  //   this.goldCoin = goldCoin.create(600, y || this.generateRandomGreaterY(), 'coin');
+  //   // this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
+  //   // this.purpleBat.animations.play('fly');
+  //   this.physics.arcade.enableBody(this.goldCoin);
+  //   this.goldCoin.body.immovable =  false;
+  //   this.goldCoin.body.velocity.x = -SPEED;
+  //   this.goldCoin.scale.setTo(0.15,0.15);
+  // },
 
   /*
     levelWater
@@ -938,7 +947,7 @@ var state = {
       context.spawnFloatingPlatform();
     }, 3000/(SPEED/100));
 
-    coinFloatingInterval = setInterval(function() {
+    goldCoinFloatingInterval = setInterval(function() {
       context.spawnFloatingCoin();
     }, 3000/(SPEED/100));
 
