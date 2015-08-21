@@ -18,6 +18,7 @@ var RESET = false;
 var RESETGAMEOVER = false;
 var GAMECONTEXT;
 var PLAYERS_ARRAY = [];
+var TIME = 0;
 
 
 /*
@@ -34,13 +35,13 @@ var water;
 var waterInterval;
 var waterTimeout;
 
-var platforms;
-var platformInterval;
-var platformFallingInterval;
-var platformNegativeInterval;
-var platformFloatingInterval;
+// var platforms;
+// var platformInterval;
+// var platformFallingInterval;
+// var platformNegativeInterval;
+// var platformFloatingInterval;
 
-var coinFloatingInterval;
+// var coinFloatingInterval;
 
 var groundTimeout;
 
@@ -58,22 +59,32 @@ var laserInterval;
 =======
 //////////////////////////
 //add bird and bat monster
-var yellowBird;
+var yellowBirds;
 var yellowBirdInterval;
 
-var purpleBat;
+var purpleBats;
 var purpleBatInterval;
+
+
+var brownBirds;
+var brownBirdInterval;
+
+var brownBats;
+var brownBatInterval;
+
+
+var ringCoins;
+var ringCoinInterval;
+
+var redHearts;
+var brownBatInterval;
+
+var goldKeys;
+var goldKeyInterval;
 ///////////////////////////
-
->>>>>>> working on flying monster
-
-var goldCoin;
-var goldCoinFloatingInterval;
-
 
 var fishes;
 var fishInterval;
-
 
 var music;
 var musicArray = ['fox', 'gorillaz', 'lucky'];
@@ -92,7 +103,6 @@ var deadEffect;
 
 var updatePosition = function(positionArray) {
 
-
   for(var i=0; i<positionArray.length; i++) {
     if(positionArray && positionArray[i]) {
       POS_X = positionArray[i].data.velocity.x;
@@ -101,9 +111,11 @@ var updatePosition = function(positionArray) {
       RAD_ANGLE = ANGLE*(Math.PI / 180)
       DECELERATE = positionArray[i].data.decelerate;
       ACCELERATE = positionArray[i].data.accelerate;
+
       if(RESET && DECELERATE) {
         GAMECONTEXT.move();
       }
+
       if(RESETGAMEOVER && DECELERATE) {
         GAMECONTEXT.reset();
       }
@@ -139,7 +151,7 @@ var state = {
   */
   preload: function() {
     console.log(this)
-    this.load.image("platform", "assets/platform.png");
+    // this.load.image("platform", "assets/platform.png");
     this.load.image("falling", "assets/falling.png");
     this.load.image("negative", "assets/negative.png");
     this.load.image("ground", "assets/ground.png");
@@ -161,17 +173,31 @@ var state = {
 
     ///////////////////////////////////
     //Add flying monster
-    this.load.image("bird", "assets/yellowBird.png");
-    this.load.image("bat", "assets/purpleBat.png");
+    // this.load.spritesheet("yellowBird", "assets/orange-dino.png", 34.5, 42);
+    // this.load.spritesheet("purpleBat", "assets/purple-dino", 34.5, 42);
+    // this.load.spritesheet("brownBird", "assets/orange-dino.png", 34.5, 42);
+    // this.load.spritesheet("brownBat", "assets/purple-dino.png", 34.5, 42);
+
+    this.load.image("yellowBird", "assets/yellowBird.png");
+    this.load.image("purpleBat", "assets/purpleBat.png");
+    this.load.image("brownBat", "assets/brownBat.png");
+    this.load.image("brownBird", "assets/brownBird.png");
     ///////////////////////////////////
 
     /////////////////////////////////////
-    //Gold Coin
-    this.load.image('goldCoin', 'assets/coin.png');
+    // //Gold Coin
+    // this.load.image('goldCoin', 'assets/coin.png');
+    // this.load.spritesheet("ringCoin", "assets/ringCoin.png", 34.5, 42);
+
+    this.load.image("goldKey", "assets/goldKey.png");
+    this.load.image("redHeart", "assets/redHeart.png");
+    this.load.image("ringCoin", "assets/ringCoin.png");
+
     ////////////////////////////////////
   },
 
   /*
+
     create
     Description:
      Adds the assets into the game on load
@@ -246,8 +272,8 @@ var state = {
        Object created that holds all types of platforms a player can jump on
       author: Alex Leonetti
     */
-    platforms = game.add.group();
-    platforms.enableBody = true;   
+    // platforms = game.add.group();
+    // platforms.enableBody = true;   
 
     water = game.add.group();
     water.enableBody = true; 
@@ -257,17 +283,21 @@ var state = {
 
     orangeDinos = game.add.group();
 
-    //////////////////////
-    //add flying monster//
-    yellowBird = game.add.group();
-    purpleBat = game.add.group();
-    //////////////////////
-
     fishes = game.add.group();
 
-    //gold
-    goldCoin = game.add.group()
+    //////////////////////
+    //add flying monster//
+    yellowBirds = game.add.group();
+    purpleBats = game.add.group();
 
+    brownBats = game.add.group();
+    brownBirds = game.add.group();
+
+
+    goldKeys = game.add.group();
+    redHearts = game.add.group();
+    ringCoins = game.add.group();
+    //////////////////////
 
     /*
       text
@@ -275,6 +305,7 @@ var state = {
        This adds text to a phaser game
       author: Alex Leonetti
     */
+
     this.scoreText = this.add.text(
       this.world.centerX,
       this.world.height/2,
@@ -322,17 +353,23 @@ var state = {
     //first increment the total score
     this.score++;
 
-    goldCoin.forEach(function(p) {
+    // goldCoin.forEach(function(p) {
+    //     if(p && p.body.x < -150) {
+    //       p.kill();
+    //     }
+    // });
+
+    ringCoins.forEach(function(p) {
         if(p && p.body.x < -150) {
           p.kill();
         }
     });
 
     //kill the coin
-    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>hit!!!')
   },
 
   update: function() {
+    TIME++;
 
     /*
       collide
@@ -341,7 +378,7 @@ var state = {
        and what happens when you collide
       author: Alex Leonetti
     */
-    this.physics.arcade.collide(players, platforms);
+    // this.physics.arcade.collide(players, platforms);
     this.physics.arcade.collide(players, orangeDinos, this.setGameOver, null, this);
     this.physics.arcade.collide(players, purpleDinos, this.setGameOver, null, this);
 
@@ -362,13 +399,19 @@ var state = {
 
     this.physics.arcade.collide(players, fishes, this.setGameOver, null, this);
 
-    this.physics.arcade.collide(players, yellowBird, this.setGameOver, null, this);
-    this.physics.arcade.collide(players, purpleBat, this.setGameOver, null, this);
+    this.physics.arcade.collide(players, yellowBirds, this.setGameOver, null, this);
+    this.physics.arcade.collide(players, purpleBats, this.setGameOver, null, this);
+    this.physics.arcade.collide(players, brownBirds, this.setGameOver, null, this);
+    this.physics.arcade.collide(players, brownBats, this.setGameOver, null, this);
+
+    // this.physics.arcade.overlap(players, ringCoin, this.incrementScore, null, this);
+    // this.physics.arcade.overlap(players, redHeart, this.incrementScore, null, this);
+    // this.physics.arcade.overlap(players, goldKey, this.incrementScore, null, this);
     
 
     //increment the score when hit the coin
-    this.physics.arcade.collide(players, goldCoin, this.setGameOver, null, this);
-
+    // this.physics.arcade.collide(players, ringCoin, this.setGameOver, null, this);
+    // this.physics.arcade.collide(players, goldCoin, this.setGameOver, null, this);
     /*
       kill()
       Description:
@@ -394,13 +437,25 @@ var state = {
       });
 
 
-      yellowBird.forEach(function(p) {
+      yellowBirds.forEach(function(p) {
         if(p && p.body.x < -150) {
           p.kill();
         }
       });
 
-      purpleBat.forEach(function(p) {
+      purpleBats.forEach(function(p) {
+        if(p && p.body.x < -150) {
+          p.kill();
+        }
+      });
+
+      brownBats.forEach(function(p) {
+        if(p && p.body.x < -150) {
+          p.kill();
+        }
+      });
+
+      brownBirds.forEach(function(p) {
         if(p && p.body.x < -150) {
           p.kill();
         }
@@ -413,11 +468,11 @@ var state = {
           w.kill();
         }
       });
-      platforms.forEach(function(p){
-        if(p.body.x < -800 || p.body.y < -48 ) {
-          p.kill();
-        }
-      });
+      // platforms.forEach(function(p){
+      //   if(p.body.x < -800 || p.body.y < -48 ) {
+      //     p.kill();
+      //   }
+      // });
       fishes.forEach(function(f) {
         if(f.body.x < - 100) {
           f.kill();
@@ -466,6 +521,26 @@ var state = {
         Depending on the velocity of the character it will change character animations
       author: Alex Leonetti
     */
+
+    yellowBirds.forEach(function(yellowBird){
+        yellowBird.body.velocity.y = Math.sin(TIME/20)*150;
+        // yellowBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+        // yellowBird.body.velocity.x = SPEED*Math.cos(game.time.now);
+    });
+
+    purpleBats.forEach(function(purpleBat){
+        purpleBat.body.velocity.y = Math.sin(TIME/20)*250;
+        // yellowBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+        // yellowBird.body.velocity.x = SPEED*Math.cos(game.time.now);
+    });
+
+    brownBats.forEach(function(brownBat){
+        brownBat.body.velocity.y = Math.sin(TIME/20)*180;
+        // yellowBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+        // yellowBird.body.velocity.x = SPEED*Math.cos(game.time.now);
+    });
+
+
     if(this.gameStarted){
       if(this.player.body.velocity.x > 0 && this.player.body.x<770){
         // this.player.animations.play('still');
@@ -487,6 +562,60 @@ var state = {
       if (this.player.body.x >= 730) {
         this.player.body.x = 730
       }
+
+      // game.time.events.repeat(1, 40000, function() {
+      //   yellowBirds.forEach(function(yellowBird){
+      //       yellowBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //       // yellowBird.body.velocity.x = SPEED*Math.cos(game.time.now);
+      //   });
+
+      //   brownBirds.forEach(function(brownBird){
+      //       brownBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //       // brownBird.body.velocity.x = SPEED*Math.cos(game.time.now);
+      //   });
+
+      //   purpleBats.forEach(function(purpleBat){
+      //       purpleBat.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //       // purpleBat.body.velocity.x = SPEED*Math.cos(game.time.now);
+      //   });
+
+      // });
+
+
+
+      // yellowBirds.forEach(function(brownBat){
+      //     // brownBat.body.velocity.x = -SPEED*Math.cos(RAD_ANGLE) - 40;
+      //   game.time.events.repeat(25, 80, function() {
+      //           brownBat.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //   }, this);
+      //   console.log('brownBat!!!!')
+
+      // });
+
+      // purpleBats.forEach(function(purpleBat){
+      //     // purpleBat.body.velocity.x = -SPEED*Math.cos(RAD_ANGLE) - 170;
+      //   game.time.events.repeat(25, 80, function() {
+      //           purpleBat.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //   }, this);
+      //   console.log('purpleBat!!!!')
+      // });
+
+      // brownBirds.forEach(function(brownBird){
+      //     // brownBird.body.velocity.x = -SPEED*Math.cos(RAD_ANGLE) - 170;
+  
+      //   game.time.events.repeat(25, 80, function() {
+      //       brownBird.body.velocity.y = -SPEED*Math.sin(game.time.now);
+      //   }, this);
+      //   console.log('brownBird!!!!')
+      // });
+
+
+    /*
+      Velocity
+      Description:
+        Updates the monster's velocity in game
+      author: Eric Le
+    */
 
     }
   
@@ -527,11 +656,11 @@ var state = {
     GAMECONTEXT = this;
 
     clearInterval(waterInterval);
-    clearInterval(platformInterval);
-    clearInterval(platformFallingInterval);
-    clearInterval(platformNegativeInterval);
+    // clearInterval(platformInterval);
+    // clearInterval(platformFallingInterval);
+    // clearInterval(platformNegativeInterval);
 
-    clearInterval(platformFloatingInterval);
+    // clearInterval(platformFloatingInterval);
     clearInterval(purpleDinoInterval);
     clearInterval(orangeDinoInterval);
     clearInterval(fishInterval);
@@ -542,21 +671,31 @@ var state = {
 
     clearInterval(yellowBirdInterval);
     clearInterval(purpleBatInterval);
-    clearInterval(goldCoinFloatingInterval);
+    clearInterval(brownBirdInterval);
+    clearInterval(brownBatInterval);
 
-    
+    // clearInterval(goldCoinFloatingInterval);
+    // clearInterval(ringCoinFloatingInterval);
+    // clearInterval(redHeartFloatingInterval);
+    // clearInterval(goldKeyFloatingInterval);
+
+
 
     this.player.dead = false;
-    platforms.removeAll();
+    // platforms.removeAll();
     water.removeAll();
     orangeDinos.removeAll();
     purpleDinos.removeAll();
     lasers.removeAll();
 
 
-    yellowBird.removeAll();
-    purpleBat.removeAll();
+    yellowBirds.removeAll();
+    purpleBats.removeAll();
+    brownBats.removeAll();
+
+
     fishes.removeAll();
+
     this.gameStarted = false;
     this.gameOver = false;
 
@@ -585,9 +724,9 @@ var state = {
     this.player.dead = true;
     // this.player.animations.play('right');
 
-    this.ground = platforms.create(0, game.world.height-64, 'ground');
-    this.ground.scale.setTo(20,2);
-    this.ground.body.immovable = true;
+    // this.ground = platforms.create(0, game.world.height-64, 'ground');
+    // this.ground.scale.setTo(20,2);
+    // this.ground.body.immovable = true;
 
     this.background.autoScroll(-SPEED * .30 ,0);
 
@@ -622,7 +761,7 @@ var state = {
 
     this.gameStarted = true;
     this.background.autoScroll(-SPEED * .40 ,0);
-    this.ground.body.velocity.x = -SPEED;
+    // this.ground.body.velocity.x = -SPEED;
 
     this.levelGround();
     waterTimeout = setTimeout(function(){
@@ -641,17 +780,22 @@ var state = {
   move: function(){
     if(!this.gameStarted){
       clearInterval(waterInterval);
-      clearInterval(platformInterval);
-      clearInterval(platformFallingInterval);
-      clearInterval(platformNegativeInterval);
+      // clearInterval(platformInterval);
+      // clearInterval(platformFallingInterval);
+      // clearInterval(platformNegativeInterval);
 
-      clearInterval(platformFloatingInterval);
+      // clearInterval(platformFloatingInterval);
       clearInterval(purpleDinoInterval);
       clearInterval(orangeDinoInterval);
-      clearInterval(goldCoinFloatingInterval);
+
+      // clearInterval(ringCoinFloatingInterval);
+      // clearInterval(redHeartFloatingInterval);
+      // clearInterval(goldKeyFloatingInterval);
 
       clearInterval(yellowBirdInterval);
       clearInterval(purpleBatInterval);
+      clearInterval(brownBatInterval);
+      clearInterval(brownBirdInterval);
 
       clearTimeout(waterTimeout);
       clearTimeout(groundTimeout);
@@ -729,31 +873,31 @@ var state = {
       These all generate the corresponding items
     author: Alex Leonetti
   */
-  spawnPlatform: function() {
-    this.ledge = platforms.create(800, this.generateRandomY(), 'platform');
-    this.ledge.body.immovable = true;
-    this.ledge.body.velocity.x = -SPEED;
-    this.ledge.scale.setTo(2,1);
-  },
-  spawnFallingPlatform: function() {
-    this.ledge = platforms.create(800, this.generateRandomY(), 'falling');
-    this.ledge.body.immovable = false;
-    this.ledge.body.velocity.x = -SPEED;
-    this.ledge.scale.setTo(2,1);
-  },
-  spawnNegativePlatform: function() {
-    this.ledge = platforms.create(800, 600, 'negative');
-    this.ledge.body.immovable = true;
-    this.ledge.body.velocity.x = -SPEED;
-    this.ledge.body.velocity.y =  -(Math.random() * 200);
-    this.ledge.scale.setTo(2,1);
-  },
-  spawnFloatingPlatform: function(y) {
-    this.ledge = platforms.create(800, y || this.generateRandomGreaterY(), 'floating');
-    this.ledge.body.immovable = true;
-    this.ledge.body.velocity.x = -SPEED;
-    this.ledge.scale.setTo(2,2);
-  },
+  // spawnPlatform: function() {
+  //   this.ledge = platforms.create(800, this.generateRandomY(), 'platform');
+  //   this.ledge.body.immovable = true;
+  //   this.ledge.body.velocity.x = -SPEED;
+  //   this.ledge.scale.setTo(2,1);
+  // },
+  // spawnFallingPlatform: function() {
+  //   this.ledge = platforms.create(800, this.generateRandomY(), 'falling');
+  //   this.ledge.body.immovable = false;
+  //   this.ledge.body.velocity.x = -SPEED;
+  //   this.ledge.scale.setTo(2,1);
+  // },
+  // spawnNegativePlatform: function() {
+  //   this.ledge = platforms.create(800, 600, 'negative');
+  //   this.ledge.body.immovable = true;
+  //   this.ledge.body.velocity.x = -SPEED;
+  //   this.ledge.body.velocity.y =  -(Math.random() * 200);
+  //   this.ledge.scale.setTo(2,1);
+  // },
+  // spawnFloatingPlatform: function(y) {
+  //   this.ledge = platforms.create(800, y || this.generateRandomGreaterY(), 'floating');
+  //   this.ledge.body.immovable = true;
+  //   this.ledge.body.velocity.x = -SPEED;
+  //   this.ledge.scale.setTo(2,2);
+  // },
   spawnWater: function() {
     var context = this;
     waterInterval = setInterval(function(){
@@ -762,12 +906,6 @@ var state = {
       context.water.body.velocity.x = -SPEED;
     },3315/(SPEED/100));
     
-  },
-  spawnFloatingCoin: function(y) {
-    this.ledge = platforms.create(600, y || this.generateRandomGreaterY(), 'goldCoin');
-    this.ledge.body.immovable = false;
-    this.ledge.body.velocity.x = -SPEED;
-    this.ledge.scale.setTo(0.15,0.15);
   },
 
   /*
@@ -846,32 +984,59 @@ var state = {
   //add yellowBird and purpleBat////////////////////////////////
 
   spawnYellowBird: function() {
-    this.yellowBird = yellowBird.create(800, 95, 'yellowBird');
-    // this.yellowBird.animations.add('fly', [0,1,2,3], 10, true);
-    // this.yellowBird.animations.play('fly');
+    this.yellowBird = yellowBirds.create(800, 95, 'yellowBird');
     this.physics.arcade.enableBody(this.yellowBird);
     this.yellowBird.body.immovable = true;
-    this.yellowBird.body.velocity.x = -SPEED - 50;
+    this.yellowBird.body.velocity.x = -SPEED;
   },
+
   spawnPurpleBat: function() {
-    this.purpleBat = purpleBat.create(1000, 240, 'purpleBat');
+    this.purpleBat = purpleBats.create(500, 185, 'purpleBat');
     // this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
     // this.purpleBat.animations.play('fly');
     this.physics.arcade.enableBody(this.purpleBat);
     this.purpleBat.body.immovable = true;
-    this.purpleBat.body.velocity.x = -SPEED - 80;
+    this.purpleBat.body.velocity.x = -2*SPEED;
   },
+
+  spawnBrownBat: function() {
+    this.brownBat = brownBats.create(1000, 240, 'brownBat');
+    this.physics.arcade.enableBody(this.brownBat);
+    this.brownBat.body.immovable = true;
+    this.brownBat.body.velocity.x = -SPEED;
+    this.brownBat.body.velocity.y = -SPEED;
+  },
+
+  spawnBrownBird: function() {
+    this.brownBird = brownBirds.create(1000, 200, 'brownBird');
+    this.physics.arcade.enableBody(this.brownBird);
+    this.brownBird.body.immovable = true;
+    this.brownBird.body.velocity.x = -SPEED;
+    this.brownBird.body.velocity.y = -SPEED;
+  },
+
   /////////////////////////////////////////////////////////////
 
-  // spawnFloatingCoin: function() {
-  //   this.goldCoin = goldCoin.create(600, y || this.generateRandomGreaterY(), 'coin');
-  //   // this.purpleBat.animations.add('fly', [0,1,2,3], 10, true);
-  //   // this.purpleBat.animations.play('fly');
-  //   this.physics.arcade.enableBody(this.goldCoin);
-  //   this.goldCoin.body.immovable =  false;
-  //   this.goldCoin.body.velocity.x = -SPEED;
-  //   this.goldCoin.scale.setTo(0.15,0.15);
-  // },
+  spawnRingCoin: function() {
+    this.ringCoin = ringCoins.create(600, this.generateRandomGreaterY(), 'ringCoin');
+    this.physics.arcade.enableBody(this.ringCoin);
+    this.ringCoin.body.immovable =  false;
+    this.ringCoin.body.velocity.x = -SPEED;
+  },
+
+  spawnRedHeart: function() {
+    this.redHeart = redHearts.create(600, this.generateRandomGreaterY(), 'redHeart');
+    this.physics.arcade.enableBody(this.redHeart);
+    this.redHeart.body.immovable =  false;
+    this.redHeart.body.velocity.x = -SPEED;
+  },
+
+  spawnGoldKey: function() {
+    this.goldKey = goldKeys.create(600, this.generateRandomGreaterY(), 'goldKey');
+    this.physics.arcade.enableBody(this.goldKey);
+    this.goldKey.body.immovable =  false;
+    this.goldKey.body.velocity.x = -SPEED;
+  },
 
   /*
     levelWater
@@ -882,17 +1047,22 @@ var state = {
   levelWater: function() {
     this.level = 'water';
 
-    clearInterval(platformFloatingInterval);
+    // clearInterval(platformFloatingInterval);
     clearInterval(purpleDinoInterval);
     clearInterval(orangeDinoInterval);
 
+<<<<<<< HEAD
     this.ground = platforms.create(0, game.world.height-64, 'ground');
+=======
+
+    // this.ground = platforms.create(0, game.world.height-64, 'ground');
+>>>>>>> finish adding moving monster
     this.ground.scale.setTo(2,2);
     this.ground.body.immovable = true;
     this.ground.body.velocity.x = -SPEED;
 
 
-    this.spawnPlatform();
+    // this.spawnPlatform();
     this.water = water.create(800, 570, 'water');
     this.water.immovable = true;
     this.water.body.velocity.x = -SPEED;
@@ -900,15 +1070,15 @@ var state = {
 
     var context = this;
     if(this.gameStarted) {
-      platformInterval = setInterval(function(){
-        context.spawnPlatform();
-      }, 3000/(SPEED/100));
-      platformFallingInterval = setInterval(function(){
-        context.spawnFallingPlatform();
-      }, (2000)/(SPEED/100));
-      platformNegativeInterval = setInterval(function(){
-        context.spawnNegativePlatform();
-      }, 8000/(SPEED/100));
+      // platformInterval = setInterval(function(){
+      //   context.spawnPlatform();
+      // }, 3000/(SPEED/100));
+      // platformFallingInterval = setInterval(function(){
+      //   context.spawnFallingPlatform();
+      // }, (2000)/(SPEED/100));
+      // platformNegativeInterval = setInterval(function(){
+      //   context.spawnNegativePlatform();
+      // }, 8000/(SPEED/100));
       fishInterval = setInterval(function() {
         context.spawnFish();
       }, 4900/(SPEED/100));
@@ -927,29 +1097,25 @@ var state = {
     this.level = 'ground';
     var context = this;
 
-    clearInterval(platformInterval);
-    clearInterval(platformFallingInterval);
-    clearInterval(platformNegativeInterval);
+    // clearInterval(platformInterval);
+    // clearInterval(platformFallingInterval);
+    // clearInterval(platformNegativeInterval);
     clearInterval(waterInterval);
     clearInterval(fishInterval);
     clearInterval(laserInterval);
 
 
-    this.ground = platforms.create(800, game.world.height-64, 'ground');
-    this.ground.scale.setTo(20,2);
-    this.ground.body.immovable = true;
-    this.ground.body.velocity.x = -SPEED;
+    // this.ground = platforms.create(800, game.world.height-64, 'ground');
+    // this.ground.scale.setTo(20,2);
+    // this.ground.body.immovable = true;
+    // this.ground.body.velocity.x = -SPEED;
 
 
-    this.spawnFloatingPlatform(350);
+    // this.spawnFloatingPlatform(350);
 
-    platformFloatingInterval = setInterval(function() {
-      context.spawnFloatingPlatform();
-    }, 3000/(SPEED/100));
-
-    goldCoinFloatingInterval = setInterval(function() {
-      context.spawnFloatingCoin();
-    }, 3000/(SPEED/100));
+    // platformFloatingInterval = setInterval(function() {
+    //   context.spawnFloatingPlatform();
+    // }, 3000/(SPEED/100));
 
     purpleDinoInterval = setInterval(function() {
       context.spawnPurpleDino();
@@ -969,6 +1135,30 @@ var state = {
 
     purpleBatInterval = setInterval(function() {
       context.spawnPurpleBat();
+    }, 8000/(SPEED/100));
+
+    // goldCoinFloatingInterval = setInterval(function() {
+    //   context.spawnFloatingCoin();
+    // }, 3000/(SPEED/100));
+
+    ringCoinFloatingInterval = setInterval(function() {
+      context.spawnRingCoin();
+    }, 3000/(SPEED/100));
+
+    goldKeyFloatingInterval = setInterval(function() {
+      context.spawnGoldKey();
+    }, 3000/(SPEED/100));
+
+    redHeartFloatingInterval = setInterval(function() {
+      context.spawnRedHeart();
+    }, 3000/(SPEED/100));
+
+    brownBatInterval = setInterval(function() {
+      context.spawnBrownBat();
+    }, 8000/(SPEED/100));
+
+    brownBirdInterval = setInterval(function() {
+      context.spawnBrownBird();
     }, 8000/(SPEED/100));
 
   },
