@@ -19,6 +19,7 @@ var RESETGAMEOVER = false;
 var GAMECONTEXT;
 var PLAYERS_ARRAY = [];
 var TIME = 0;
+var SCORE = 0;
 
 
 /*
@@ -35,11 +36,11 @@ var water;
 var waterInterval;
 var waterTimeout;
 
-// var platforms;
-// var platformInterval;
-// var platformFallingInterval;
-// var platformNegativeInterval;
-// var platformFloatingInterval;
+var platforms;
+var platformInterval;
+var platformFallingInterval;
+var platformNegativeInterval;
+var platformFloatingInterval;
 
 // var coinFloatingInterval;
 
@@ -271,8 +272,8 @@ var state = {
        Object created that holds all types of platforms a player can jump on
       author: Alex Leonetti
     */
-    // platforms = game.add.group();
-    // platforms.enableBody = true;   
+    platforms = game.add.group();
+    platforms.enableBody = true;   
 
     water = game.add.group();
     water.enableBody = true; 
@@ -324,13 +325,13 @@ var state = {
       {
           size: "32px",
           fill: "#FFF",
-          align: "center"
+          align: "top"
       }
     );
 
     this.scoreText.anchor.setTo(0.5, 0.5);
 
-    this.scoreBanner.anchor.setTo(0.3, 0.3);
+    this.scoreBanner.anchor.setTo(0.5, 0.5);
 
     /*
       reset
@@ -348,25 +349,6 @@ var state = {
     author: Alex Leonetti
   */
 
-  incrementScore: function() {
-    //first increment the total score
-    this.score++;
-
-    // goldCoin.forEach(function(p) {
-    //     if(p && p.body.x < -150) {
-    //       p.kill();
-    //     }
-    // });
-
-    ringCoins.forEach(function(p) {
-        if(p && p.body.x < -150) {
-          p.kill();
-        }
-    });
-
-    //kill the coin
-  },
-
   update: function() {
     TIME++;
 
@@ -377,7 +359,7 @@ var state = {
        and what happens when you collide
       author: Alex Leonetti
     */
-    // this.physics.arcade.collide(players, platforms);
+    this.physics.arcade.collide(players, platforms);
     this.physics.arcade.collide(players, orangeDinos, this.setGameOver, null, this);
     this.physics.arcade.collide(players, purpleDinos, this.setGameOver, null, this);
 
@@ -394,16 +376,31 @@ var state = {
       item.kill();
     }, null, this);
 
-    this.physics.arcade.overlap(lasers, purpleBat, function(player, item){
+    this.physics.arcade.overlap(lasers, purpleBats, function(player, item){
       item.kill();
     }, null, this);
 
-    this.physics.arcade.overlap(lasers, yellowBird, function(player, item){
+    this.physics.arcade.overlap(lasers, yellowBirds, function(player, item){
       item.kill();
     }, null, this);
 
-    this.physics.arcade.overlap(lasers, brownBat, function(player, item){
+    this.physics.arcade.overlap(lasers, brownBats, function(player, item){
       item.kill();
+    }, null, this);
+
+    this.physics.arcade.overlap(players, goldKeys, function(player, item){
+      item.kill();
+      this.score++;
+    }, null, this);
+
+    this.physics.arcade.overlap(players, ringCoins, function(player, item){
+      item.kill();
+      this.score++;
+    }, null, this);
+
+    this.physics.arcade.overlap(players, redHearts, function(player, item){
+      item.kill();
+      this.score++;
     }, null, this);
 
 
@@ -480,11 +477,11 @@ var state = {
           w.kill();
         }
       });
-      // platforms.forEach(function(p){
-      //   if(p.body.x < -800 || p.body.y < -48 ) {
-      //     p.kill();
-      //   }
-      // });
+      platforms.forEach(function(p){
+        if(p.body.x < -800 || p.body.y < -48 ) {
+          p.kill();
+        }
+      });
       fishes.forEach(function(f) {
         if(f.body.x < - 100) {
           f.kill();
@@ -694,7 +691,7 @@ var state = {
 
 
     this.player.dead = false;
-    // platforms.removeAll();
+    platforms.removeAll();
     water.removeAll();
     orangeDinos.removeAll();
     purpleDinos.removeAll();
@@ -736,9 +733,9 @@ var state = {
     this.player.dead = true;
     // this.player.animations.play('right');
 
-    // this.ground = platforms.create(0, game.world.height-64, 'ground');
-    // this.ground.scale.setTo(20,2);
-    // this.ground.body.immovable = true;
+    this.ground = platforms.create(0, game.world.height-64, 'ground');
+    this.ground.scale.setTo(20,2);
+    this.ground.body.immovable = true;
 
     this.background.autoScroll(-SPEED * .30 ,0);
 
@@ -885,31 +882,31 @@ var state = {
       These all generate the corresponding items
     author: Alex Leonetti
   */
-  // spawnPlatform: function() {
-  //   this.ledge = platforms.create(800, this.generateRandomY(), 'platform');
-  //   this.ledge.body.immovable = true;
-  //   this.ledge.body.velocity.x = -SPEED;
-  //   this.ledge.scale.setTo(2,1);
-  // },
-  // spawnFallingPlatform: function() {
-  //   this.ledge = platforms.create(800, this.generateRandomY(), 'falling');
-  //   this.ledge.body.immovable = false;
-  //   this.ledge.body.velocity.x = -SPEED;
-  //   this.ledge.scale.setTo(2,1);
-  // },
-  // spawnNegativePlatform: function() {
-  //   this.ledge = platforms.create(800, 600, 'negative');
-  //   this.ledge.body.immovable = true;
-  //   this.ledge.body.velocity.x = -SPEED;
-  //   this.ledge.body.velocity.y =  -(Math.random() * 200);
-  //   this.ledge.scale.setTo(2,1);
-  // },
-  // spawnFloatingPlatform: function(y) {
-  //   this.ledge = platforms.create(800, y || this.generateRandomGreaterY(), 'floating');
-  //   this.ledge.body.immovable = true;
-  //   this.ledge.body.velocity.x = -SPEED;
-  //   this.ledge.scale.setTo(2,2);
-  // },
+  spawnPlatform: function() {
+    this.ledge = platforms.create(800, this.generateRandomY(), 'platform');
+    this.ledge.body.immovable = true;
+    this.ledge.body.velocity.x = -SPEED;
+    this.ledge.scale.setTo(2,1);
+  },
+  spawnFallingPlatform: function() {
+    this.ledge = platforms.create(800, this.generateRandomY(), 'falling');
+    this.ledge.body.immovable = false;
+    this.ledge.body.velocity.x = -SPEED;
+    this.ledge.scale.setTo(2,1);
+  },
+  spawnNegativePlatform: function() {
+    this.ledge = platforms.create(800, 600, 'negative');
+    this.ledge.body.immovable = true;
+    this.ledge.body.velocity.x = -SPEED;
+    this.ledge.body.velocity.y =  -(Math.random() * 200);
+    this.ledge.scale.setTo(2,1);
+  },
+  spawnFloatingPlatform: function(y) {
+    this.ledge = platforms.create(800, y || this.generateRandomGreaterY(), 'floating');
+    this.ledge.body.immovable = true;
+    this.ledge.body.velocity.x = -SPEED;
+    this.ledge.scale.setTo(2,2);
+  },
   spawnWater: function() {
     var context = this;
     waterInterval = setInterval(function(){
